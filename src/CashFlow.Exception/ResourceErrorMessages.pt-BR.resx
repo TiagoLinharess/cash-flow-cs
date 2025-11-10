@@ -129,4 +129,7 @@
   <data name="UNKNOWN_ERROR" xml:space="preserve">
     <value>Erro desconhecido.</value>
   </data>
+  <data name="EXPENSE_NOT_FOUND" xml:space="preserve">
+    <value>A despesa não foi encontrada</value>
+  </data>
 </root>
