@@ -1,5 +1,6 @@
 ﻿using CashFlow.Application.AutoMapper;
 using CashFlow.Application.UseCases.Expenses.Create;
+using CashFlow.Application.UseCases.Expenses.Delete;
 using CashFlow.Application.UseCases.Expenses.Read;
 using CashFlow.Application.UseCases.Expenses.ReadAt;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,7 @@ namespace CashFlow.Application
             services.AddScoped<ICreateExpenseUseCase, CreateExpenseUseCase>();
             services.AddScoped<IReadExpensesUseCase, ReadExpensesUseCase>();
             services.AddScoped<IReadAtExpenseUseCase, ReadAtExpenseUseCase>();
+            services.AddScoped<IDeleteExpenseUseCase, DeleteExpenseUseCase>();
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using CashFlow.Application.UseCases.Expenses.Create;
+using CashFlow.Application.UseCases.Expenses.Delete;
 using CashFlow.Application.UseCases.Expenses.Read;
 using CashFlow.Application.UseCases.Expenses.ReadAt;
 using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CashFlow.API.Controllers
@@ -45,6 +45,18 @@ namespace CashFlow.API.Controllers
         {
             var response = await readAtExpenseUseCase.Execute(id);
             return Ok(response);
+        }
+
+        [HttpDelete]
+        [Route("{id:long}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(
+            [FromServices] IDeleteExpenseUseCase deleteExpenseUseCase,
+            [FromRoute] long id)
+        {
+            await deleteExpenseUseCase.Execute(id);
+            return NoContent();
         }
     }
 }

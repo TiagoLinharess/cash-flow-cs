@@ -14,11 +14,24 @@ namespace CashFlow.Infrastructure.DataAccess.Repositories
 
         public async Task Add(Expense expense) => await _dbContext.Expenses
             .AddAsync(expense);
+        
         public async Task<List<Expense>> Read() => await _dbContext.Expenses
             .AsNoTracking()
             .ToListAsync();
+        
         public async Task<Expense?> ReadAt(long id) => await _dbContext.Expenses
             .AsNoTracking()
             .FirstOrDefaultAsync(expense => expense.Id == id);
+
+        public async Task<bool> Delete(long id)
+        {
+            var result = await _dbContext.Expenses.FirstOrDefaultAsync(expense => expense.Id == id);
+
+            if (result is null) return false;
+
+            _dbContext.Expenses.Remove(result);
+            
+            return true;
+        }
     }
 }
