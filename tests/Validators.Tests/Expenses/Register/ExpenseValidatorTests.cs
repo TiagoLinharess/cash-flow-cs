@@ -1,16 +1,17 @@
-﻿using CashFlow.Application.UseCases.Expenses.Create;
+﻿using CashFlow.Application.UseCases.Expenses;
+using CashFlow.Communication.Enums;
 using CashFlow.Exception;
 using CommonTestUtilities.Requests;
 using Shouldly;
 
 namespace Validators.Tests.Expenses.Register
 {
-    public class RegisterExpenseValidatorTests
+    public class ExpenseValidatorTests
     {
         [Fact]
         public void Success()
         {
-            var validator = new RegisterExpenseValidator();
+            var validator = new ExpenseValidator();
             var request = RequestRegisterExpenseJsonBuilder.Build();
 
             var result = validator.Validate(request);
@@ -24,7 +25,7 @@ namespace Validators.Tests.Expenses.Register
         [InlineData(null)]
         public void Error_Title_Invalid(string title)
         {
-            var validator = new RegisterExpenseValidator();
+            var validator = new ExpenseValidator();
             var request = RequestRegisterExpenseJsonBuilder.Build();
             request.Title = title;
 
@@ -40,7 +41,7 @@ namespace Validators.Tests.Expenses.Register
         [InlineData(-1)]
         public void Error_Amount_Invalid(decimal amount)
         {
-            var validator = new RegisterExpenseValidator();
+            var validator = new ExpenseValidator();
             var request = RequestRegisterExpenseJsonBuilder.Build();
             request.Amount = amount;
 
@@ -54,9 +55,9 @@ namespace Validators.Tests.Expenses.Register
         [Fact]
         public void Error_Payment_Type_Invalid()
         {
-            var validator = new RegisterExpenseValidator();
+            var validator = new ExpenseValidator();
             var request = RequestRegisterExpenseJsonBuilder.Build();
-            request.PaymentType = (CashFlow.Communication.Enums.PaymentType)999;
+            request.PaymentType = (PaymentType)999;
 
             var result = validator.Validate(request);
 
