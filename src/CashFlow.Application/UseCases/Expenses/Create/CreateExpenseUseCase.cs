@@ -10,12 +10,12 @@ namespace CashFlow.Application.UseCases.Expenses.Create
 {
     internal class CreateExpenseUseCase : ICreateExpenseUseCase
     {
-        private readonly IExpensesRepository _repository;
+        private readonly IExpensesWriteOnlyRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public CreateExpenseUseCase(
-            IExpensesRepository repository,
+            IExpensesWriteOnlyRepository repository,
             IUnitOfWork unitOfWork,
             IMapper mapper)
         {

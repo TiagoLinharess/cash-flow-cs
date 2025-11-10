@@ -8,10 +8,10 @@ namespace CashFlow.Application.UseCases.Expenses.ReadAt;
 
 internal class ReadAtExpenseUseCase : IReadAtExpenseUseCase
 {
-    private readonly IExpensesRepository _repository;
+    private readonly IExpensesReadOnlyRepository _repository;
     private readonly IMapper _mapper;
     
-    public ReadAtExpenseUseCase(IExpensesRepository repository, IMapper mapper)
+    public ReadAtExpenseUseCase(IExpensesReadOnlyRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;
@@ -21,11 +21,8 @@ internal class ReadAtExpenseUseCase : IReadAtExpenseUseCase
     {
         var result = await _repository.ReadAt(id);
         
-        if (result is not null)
-        {
-            return _mapper.Map<ResponseExpenseJson>(result);
-        }
-        
-        throw new NotFoundException(ResourceErrorMessages.EXPENSE_NOT_FOUND);
+        return result is not null 
+            ? _mapper.Map<ResponseExpenseJson>(result) 
+            : throw new NotFoundException(ResourceErrorMessages.EXPENSE_NOT_FOUND);
     }
 }
