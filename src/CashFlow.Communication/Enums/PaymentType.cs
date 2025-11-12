@@ -1,10 +1,9 @@
-﻿namespace CashFlow.Communication.Enums
+﻿namespace CashFlow.Communication.Enums;
+
+public enum PaymentType
 {
-    public enum PaymentType
-    {
-        Cash,
-        CreditCard,
-        DebitCard,
-        ElectronicTransfer,
-    }
+    Cash,
+    CreditCard,
+    DebitCard,
+    ElectronicTransfer,
 }

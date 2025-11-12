@@ -6,45 +6,44 @@ using CashFlow.Domain.Repositories;
 using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Exception.ExceptionsBase;
 
-namespace CashFlow.Application.UseCases.Expenses.Create
+namespace CashFlow.Application.UseCases.Expenses.Create;
+
+internal class CreateExpenseUseCase : ICreateExpenseUseCase
 {
-    internal class CreateExpenseUseCase : ICreateExpenseUseCase
+    private readonly IExpensesWriteOnlyRepository _repository;
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IMapper _mapper;
+
+    public CreateExpenseUseCase(
+        IExpensesWriteOnlyRepository repository,
+        IUnitOfWork unitOfWork,
+        IMapper mapper)
     {
-        private readonly IExpensesWriteOnlyRepository _repository;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        _repository = repository;
+        _unitOfWork = unitOfWork;
+        _mapper = mapper;
+    }
 
-        public CreateExpenseUseCase(
-            IExpensesWriteOnlyRepository repository,
-            IUnitOfWork unitOfWork,
-            IMapper mapper)
-        {
-            _repository = repository;
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
+    public async Task<ResponseRegisteredExpenseJson> Execute(RequestExpenseJson request)
+    {
+        Validate(request);
 
-        public async Task<ResponseRegisteredExpenseJson> Execute(RequestExpenseJson request)
-        {
-            Validate(request);
+        var entity = _mapper.Map<Expense>(request);
 
-            var entity = _mapper.Map<Expense>(request);
+        await _repository.Add(entity);
+        await _unitOfWork.Commit();
 
-            await _repository.Add(entity);
-            await _unitOfWork.Commit();
+        return _mapper.Map<ResponseRegisteredExpenseJson>(entity);
+    }
 
-            return _mapper.Map<ResponseRegisteredExpenseJson>(entity);
-        }
+    private void Validate(RequestExpenseJson request)
+    {
+        var validator = new ExpenseValidator();
+        var result = validator.Validate(request);
 
-        private void Validate(RequestExpenseJson request)
-        {
-            var validator = new ExpenseValidator();
-            var result = validator.Validate(request);
+        if (result.IsValid) return;
 
-            if (result.IsValid) return;
-            
-            var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
-            throw new ErrorOnValidationException(errorMessages);
-        }
+        var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
+        throw new ErrorOnValidationException(errorMessages);
     }
 }
