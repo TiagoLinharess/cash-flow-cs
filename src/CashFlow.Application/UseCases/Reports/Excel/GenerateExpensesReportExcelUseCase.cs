@@ -3,7 +3,7 @@ using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Domain.Resources.Reports;
 using ClosedXML.Excel;
 
-namespace CashFlow.Application.UseCases.Reports;
+namespace CashFlow.Application.UseCases.Reports.Excel;
 
 public class GenerateExpensesReportExcelUseCase : IGenerateExpensesReportExcelUseCase
 {
