@@ -39,8 +39,15 @@ Para obter uma cópia local funcionando, siga estes passos simples.
     ```
 
 2. Preencha as informações no arquivo `appsettings.Development.json`.
+4. Rode o comando abaixo para criar a migration:
+    ```sh
+    dotnet ef migrations add InitialMigration --project CashFlow.Infrastructure --startup-project CashFlow.API
+    ```
+5. Rode o comando abaixo para executar a migration:
+    ```sh
+    dotnet ef database update --project CashFlow.Infrastructure --startup-project CashFlow.API
+    ```
 3. Execute a API e aproveite o seu teste :)
-
 
 
 

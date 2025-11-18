@@ -6,6 +6,7 @@ using CashFlow.Application.UseCases.Expenses.ReadAt;
 using CashFlow.Application.UseCases.Expenses.Update;
 using CashFlow.Application.UseCases.Reports.Excel;
 using CashFlow.Application.UseCases.Reports.Pdf;
+using CashFlow.Application.UseCases.Users.Register;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CashFlow.Application;
@@ -21,6 +22,7 @@ public static class DependencyInjectionExtension
     private static void AddAutoMapper(IServiceCollection services)
     {
         services.AddAutoMapper(cfg => cfg.AddProfile<ExpenseMapping>());
+        services.AddAutoMapper(cfg => cfg.AddProfile<UserMapping>());
     }
 
     private static void AddUseCases(IServiceCollection services)
@@ -32,5 +34,6 @@ public static class DependencyInjectionExtension
         services.AddScoped<IDeleteExpenseUseCase, DeleteExpenseUseCase>();
         services.AddScoped<IGenerateExpensesReportExcelUseCase, GenerateExpensesReportExcelUseCase>();
         services.AddScoped<IGenerateExpensesReportPdfUseCase, GenerateExpensesReportPdfUseCase>();
+        services.AddScoped<IRegisterUserUseCase, RegisterUserUseCase>();
     }
 }
