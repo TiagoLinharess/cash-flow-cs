@@ -4,6 +4,7 @@ using CashFlow.Communication.Responses;
 using CashFlow.Domain.Repositories;
 using CashFlow.Domain.Repositories.Users;
 using CashFlow.Domain.Security.Cryptography;
+using CashFlow.Domain.Security.Tokens;
 using CashFlow.Exception;
 using CashFlow.Exception.ExceptionsBase;
 using FluentValidation.Results;
@@ -17,19 +18,22 @@ internal class RegisterUserUseCase : IRegisterUserUseCase
     private readonly IUsersReadOnlyRepository _readOnlyRepository;
     private readonly IUsersWriteOnlyRepository _writeOnlyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IAccessTokenGenerator _tokenGenerator;
 
     public RegisterUserUseCase(
         IMapper mapper,
         IPasswordEncripter passwordEncripter,
         IUsersReadOnlyRepository readOnlyRepository,
         IUsersWriteOnlyRepository writeOnlyRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IAccessTokenGenerator tokenGenerator)
     {
         _mapper = mapper;
         _passwordEncripter = passwordEncripter;
         _readOnlyRepository = readOnlyRepository;
         _writeOnlyRepository = writeOnlyRepository;
         _unitOfWork = unitOfWork;
+        _tokenGenerator = tokenGenerator;
     }
 
     public async Task<ResponseRegisteredUserJson> Execute(RequestRegisterUserJson request)
@@ -46,6 +50,7 @@ internal class RegisterUserUseCase : IRegisterUserUseCase
         return new ResponseRegisteredUserJson
         {
             Name = user.Name,
+            Token = _tokenGenerator.Generate(user)
         };
     }
 
