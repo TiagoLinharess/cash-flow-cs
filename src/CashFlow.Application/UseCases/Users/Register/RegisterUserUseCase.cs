@@ -11,7 +11,7 @@ using FluentValidation.Results;
 
 namespace CashFlow.Application.UseCases.Users.Register;
 
-internal class RegisterUserUseCase : IRegisterUserUseCase
+public class RegisterUserUseCase : IRegisterUserUseCase
 {
     private readonly IMapper _mapper;
     private readonly IPasswordEncripter _passwordEncripter;
@@ -66,9 +66,10 @@ internal class RegisterUserUseCase : IRegisterUserUseCase
             result.Errors.Add(new ValidationFailure(string.Empty, ResourceErrorMessages.EMAIL_ALREADY_REGISTERED));
         }
 
-        if (result.IsValid) return;
-
-        var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
-        throw new ErrorOnValidationException(errorMessages);
+        if (!result.IsValid)
+        {
+            var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
+            throw new ErrorOnValidationException(errorMessages);
+        }
     }
 }

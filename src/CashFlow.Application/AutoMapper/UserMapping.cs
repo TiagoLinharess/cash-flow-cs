@@ -4,7 +4,7 @@ using CashFlow.Domain.Entities;
 
 namespace CashFlow.Application.AutoMapper;
 
-internal class UserMapping : Profile
+public class UserMapping : Profile
 {
     public UserMapping()
     {
