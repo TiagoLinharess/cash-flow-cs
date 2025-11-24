@@ -24,8 +24,9 @@ public class JwtTokenGenerator : IAccessTokenGenerator
         {
             new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Sid, user.UserIdentifier.ToString()),
+            new Claim(ClaimTypes.Role, user.Role),
         };
-        
+
         var tokeDescriptor = new SecurityTokenDescriptor
         {
             Expires = DateTime.UtcNow.AddMinutes(_expirationTimeMinutes),
@@ -35,14 +36,14 @@ public class JwtTokenGenerator : IAccessTokenGenerator
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var securityToken = tokenHandler.CreateToken(tokeDescriptor);
-        
+
         return tokenHandler.WriteToken(securityToken);
     }
 
     private SymmetricSecurityKey SecurityKey()
     {
         var key = Encoding.UTF8.GetBytes(_signingKey);
-        
+
         return new SymmetricSecurityKey(key);
     }
 }
